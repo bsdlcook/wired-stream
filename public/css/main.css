@@ -1,0 +1,91 @@
+@import url('./theme.css');
+
+* {
+	font-family: var(--font);
+}
+
+body {
+	margin-top: 180px;
+	background-image: url(../images/falling.gif);
+}
+
+hr {
+	border-top: 2px solid var(--accent);
+	margin-bottom: unset;
+}
+
+a:hover {
+	color: var(--text);
+}
+
+a {
+	color: var(--accent);
+	text-decoration: none;
+}
+
+p {
+	color: var(--text);
+	font-size: 11px;
+}
+
+h1 {
+	display: inline-block;
+	color: black;
+	background-color: var(--accent);
+	padding: 1px;
+	font-size: 16px;
+}
+
+.accent-text {
+	color: var(--accent);
+}
+
+.one-half.column {
+	background-color: #000000;
+	box-shadow: 0px 0px 0px 2px var(--accent);
+	padding: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	float: none !important;
+}
+
+.fa {
+	color: var(--text);
+}
+
+.fa:hover {
+	color: var(--accent);
+}
+
+.header-title {
+	text-align: left;
+}
+
+.header-title .header-image {
+	float: right;
+	vertical-align: middle;
+	height: 140px;
+	width: 140px;
+	box-shadow: 0px 0px 0px 2px var(--accent);
+}
+
+.prompt {
+	background-color: transparent;
+	color: var(--text);
+}
+
+.username {
+	color: var(--username);
+}
+
+.hostname {
+	color: var(--accent);
+}
+
+.dir {
+	font-weight: bold;
+}
+
+pre, blockquote, dl, figure, table, p, ul, ol, form {
+	margin-bottom: 15px;
+}
