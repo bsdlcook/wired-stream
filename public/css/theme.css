@@ -1,0 +1,15 @@
+@import url('./normalize.css');
+@import url('./skeleton.css');
+@import url('./awesome.css');
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono');
+
+:root {
+	--accent: #D2738A;
+	--bg: #141221;
+	--code-bg: #000;
+	--code-bdr: #473F57;
+	--hostname: #3A6169;
+	--username: #8542FF;
+	--text: #FFFFFF;
+	--font: 'IBM Plex Mono', monospace;
+}
