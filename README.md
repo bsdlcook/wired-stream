@@ -1,3 +1,4 @@
+![](https://gitlab.com/lust3088/wired-stream/badges/master/build.svg)
 # What is this?
 This is the music stream frontend/backend for the wired ``i.wired.sh/play``.  
 # Prerequisites.
