@@ -1,0 +1,16 @@
+            <marquee behavior="scroll" direction="left"><p id="f">Currently playing: <span style="color:var(--username)">{{file_name}}</span></p></marquee>
+            <div class="header-title">
+            <img class="header-image" src="../../static/images/profile.jpg">
+        </div>
+	    <audio id="s"><source src="../../{{api_url}}/{{file_id}}" type="{{file_mime}}"></audio>
+       	{{> player_controls}} 
+        <hr/>
+        <br>
+        <p style="text-align:center">© 2018 wired.sh</p>
+        <hr>
+        <br>
+        <h1 style="font-size:15px">File information</h1>
+        <p id="f_id">ID: ({{file_id}}/{{file_count}})</p>
+        <p id="f_hash">Hash: {{file_hash}}</p>
+	    <p>Permalink: <span style="color:var(--accent)">{{url}}/{{player_url}}/ + Hash</span></p>
+	    {{> player_script}}
