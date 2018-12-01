@@ -17,12 +17,12 @@ export default class WiredStream extends classes(
 ) {
   constructor(options) {
     super();
+    this.fileTable = [0];
+    this.appName = this.constructor.name;
     this.playerUrl = options.playerUrl;
     this.apiUrl = options.apiUrl;
     this.filePath = options.localDir;
     this.port = options.port;
-    this.appName = this.constructor.name;
-    this.fileTable = [0];
     this.allowedTypes = options.types;
     this.initFiles();
     this.initApp();
