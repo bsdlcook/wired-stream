@@ -18,7 +18,7 @@ By default this application runs on port 3001 so change as you will. ``playerUrl
 -  ``apiUrl``: localhost:3001/**media**/{id}
 
 **How does it work?**
-The application will read all files within the directory specified in the config, and append those with a matching file extension in the allowed types array. Each file is given it's own hash alongide an id that can be assessed from the api: ``localhost:3001/media/{id||hash}`` - this will return the particular file requested as a stream and is the main backend api of the whole application. An example could be as follows:
+The application will read all files within the directory specified in the config, and append those with a matching file extension in the allowed types array. Each file is given its own hash alongside an id that can be assessed from the api: ``localhost:3001/media/{id||hash}`` - this will return the particular file requested as a stream and is the main backend api of the whole application. An example could be as follows:
 - ``File: Some_Song.mp3`` 
 - ``ID: 20``
 - ``Hash: ccabf03ddebb8d831974``

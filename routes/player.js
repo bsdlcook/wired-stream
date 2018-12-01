@@ -21,9 +21,9 @@ export default class WiredPlayer {
         file_count: this.fileCount(),
         file_mime: mime.lookup(this.filePath + file),
         file_hash: this.genHash(file),
-        api_path: this.apiUrl,
-        url: req.get('host'),
-        player_url: this.playerUrl,
+	url: req.get('host'),
+	api_url: this.apiUrl,
+        player_url: this.playerUrl
       });
     });
     return player;
