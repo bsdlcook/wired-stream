@@ -45,8 +45,8 @@ export default class WiredStream extends classes(
 
   initApp() {
     app.enable('trust proxy', true);
-    app.engine('handlebars', exphbs());
-    app.set('view engine', 'handlebars');
+    app.engine('hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}));
+    app.set('view engine', 'hbs');
     app.use('/static', express.static('public'));
     app.use('/' + this.apiUrl, this.apiRouter());
     app.use('/' + this.playerUrl, this.playerRouter());
