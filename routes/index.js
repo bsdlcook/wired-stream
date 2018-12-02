@@ -5,7 +5,7 @@ export default class WiredIndex {
   indexRouter() {
     index.get('/', (req, res) => {
       res.render('home', {
-        title: 'Uh oh — wired.sh',
+        title: 'Uh oh — wired.sh'
       });
     });
     return index;
