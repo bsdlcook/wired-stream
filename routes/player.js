@@ -5,6 +5,12 @@ const player = express.Router();
 export default class WiredPlayer {
   playerRouter() {
     player.get('/:id', (req, res) => {
+      if (this.fileCount() < 1) {
+        return res.status(200).render('player', {
+          title: 'Error: No files found',
+          file_error: true
+        });
+      }
       const id = req.params.id;
       if (!this.findFile(id)) return this.randomFile(res);
       if (req.url.endsWith('/'))
@@ -19,7 +25,7 @@ export default class WiredPlayer {
         file_hash: this.genHash(file),
         url: req.get('host'),
         api_url: this.apiUrl,
-        player_url: this.playerUrl,
+        player_url: this.playerUrl
       });
     });
     player.get('/', (req, res) => {

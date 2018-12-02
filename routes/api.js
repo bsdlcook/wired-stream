@@ -14,7 +14,7 @@ export default class WiredApi {
       const fileStat = fs.statSync(filePath);
       res.writeHead(200, {
         'Content-Type': mime.lookup(filePath),
-        'Content-Length': fileStat.size,
+        'Content-Length': fileStat.size
       });
       console.log(
         "[%s]: Streaming file_id %s '%s' to client %s.",
@@ -34,7 +34,7 @@ export default class WiredApi {
       res.status(200).send({
         id: fileId,
         file: this.cleanName(fileName),
-        hash: fileHash,
+        hash: fileHash
       });
     });
     return api;

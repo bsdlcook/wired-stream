@@ -36,11 +36,15 @@ export default class WiredStream extends classes(
       if (this.allowedTypes.indexOf(path.extname(file)) > -1)
         this.fileTable.push([file, this.genHash(file)]);
     });
-    console.log(
-      '[%s]: Added %s files to the file table.',
-      this.appName,
-      this.fileCount()
-    );
+    if (this.fileCount() < 1) {
+      console.log('[%s]: No files found in %s.', this.appName, this.filePath);
+    } else {
+      console.log(
+        '[%s]: Added %s files to the file table.',
+        this.appName,
+        this.fileCount()
+      );
+    }
   }
 
   initApp() {
@@ -107,7 +111,7 @@ export default class WiredStream extends classes(
         '/' +
           this.playerUrl +
           '/' +
-          Math.floor(Math.random() * this.fileCount())
+          Math.floor(Math.random() * this.fileCount() + 1)
       );
   }
 }
