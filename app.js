@@ -1,6 +1,6 @@
 import WiredStream from './stream';
 
 new WiredStream({
-  localDir: '/tmp/',
+  localDir: '/path/to/music/dir/',
   types: ['.mp3']
 });
