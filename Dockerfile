@@ -12,8 +12,8 @@ RUN npm install babel-cli -g
 # Install necessary dependencies.
 RUN npm install
 
-# Expose port 3001.
-EXPOSE 3001
+# Expose port 3000.
+EXPOSE 3000
 
 # Run application with babel.
 CMD ["babel-node","app"]
