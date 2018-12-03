@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import express from 'express';
 import exphbs from 'express-handlebars';
+import minifyHTML from 'express-minify-html';
 import crypto from 'crypto';
 import mime from 'mime-types';
 import classes from 'extends-classes';
@@ -19,10 +20,11 @@ export default class WiredStream extends classes(
     super();
     this.fileTable = [0];
     this.appName = this.constructor.name;
-    this.playerUrl = options.playerUrl;
-    this.apiUrl = options.apiUrl;
+    this.hashLen = options.hashLen || 8;
+    this.playerUrl = options.playerUrl || 'play';
+    this.apiUrl = options.apiUrl || 'media';
     this.filePath = options.localDir;
-    this.port = options.port;
+    this.port = options.port || 3000;
     this.allowedTypes = options.types;
     this.initFiles();
     this.initApp();
@@ -51,6 +53,20 @@ export default class WiredStream extends classes(
     app.enable('trust proxy', true);
     app.engine('hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}));
     app.set('view engine', 'hbs');
+    app.use(
+      minifyHTML({
+        override: true,
+        exception_url: false,
+        htmlMinifier: {
+          removeComments: true,
+          collapseWhitespace: true,
+          collapseBooleanAttributes: true,
+          removeAttributeQuotes: true,
+          removeEmptyAttributes: true,
+          minifyJS: true
+        }
+      })
+    );
     app.use('/static', express.static('public'));
     app.use('/' + this.apiUrl, this.apiRouter());
     app.use('/' + this.playerUrl, this.playerRouter());
@@ -83,7 +99,7 @@ export default class WiredStream extends classes(
       .createHash('sha1')
       .update(file)
       .digest('hex')
-      .substr(20);
+      .substr(0, this.hashLen);
   }
 
   findByHash(hash) {
