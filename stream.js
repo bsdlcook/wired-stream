@@ -11,16 +11,12 @@ import WiredPlayer from './routes/player';
 import WiredIndex from './routes/index';
 
 const app = express();
-export default class WiredStream extends classes(
-  WiredApi,
-  WiredPlayer,
-  WiredIndex
-) {
+export default class WiredStream extends classes(WiredApi, WiredPlayer, WiredIndex) {
   constructor(options) {
     super();
     this.fileTable = [0];
     this.appName = this.constructor.name;
-    this.hashLen = options.hashLen || 8;
+    this.hashLen = options.hashLen || 10;
     this.playerUrl = options.playerUrl || 'play';
     this.apiUrl = options.apiUrl || 'media';
     this.filePath = options.localDir;
@@ -72,17 +68,13 @@ export default class WiredStream extends classes(
     app.use('/' + this.playerUrl, this.playerRouter());
     app.use('/', this.indexRouter());
     app.use((req, res) => {
-      res.status(200).redirect('/');
+      res.redirect('/');
     });
   }
 
   start() {
     app.listen(this.port, () => {
-      console.log(
-        '[%s]: Application running on port %s.',
-        this.appName,
-        this.port
-      );
+      console.log('[%s]: Application running on port %s.', this.appName, this.port);
     });
   }
 
@@ -100,6 +92,10 @@ export default class WiredStream extends classes(
       .update(file)
       .digest('hex')
       .substr(0, this.hashLen);
+  }
+
+  fileExists(file) {
+    return fs.existsSync(this.filePath + this.findFile(file));
   }
 
   findByHash(hash) {
@@ -121,13 +117,8 @@ export default class WiredStream extends classes(
   }
 
   randomFile(res) {
-    res
-      .status(404)
-      .redirect(
-        '/' +
-          this.playerUrl +
-          '/' +
-          Math.floor(Math.random() * this.fileCount() + 1)
-      );
+    res.redirect(
+      '/' + this.playerUrl + '/' + Math.floor(Math.random() * this.fileCount() + 1)
+    );
   }
 }

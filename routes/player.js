@@ -5,18 +5,24 @@ const player = express.Router();
 export default class WiredPlayer {
   playerRouter() {
     player.get('/:id', (req, res) => {
-      if (this.fileCount() < 1) {
-        return res.status(200).render('player', {
-          title: 'Error: No files found',
-          file_error: true
+      const id = req.params.id;
+      const file = this.findFile(id);
+      if (this.fileCount() < 1 || (file && !this.fileExists(id))) {
+        if (file) this.fileTable.splice([this.findIndex(file)], 1);
+        const title = this.fileCount() < 1 ? 'no files found.' : 'file no longer exists.';
+        const message =
+          this.fileCount() < 1
+            ? 'No files exist in the file table, please specify a valid directory in the server configuration.'
+            : 'This file was removed from the server.';
+        return res.status(500).render('player', {
+          error: true,
+          error_title: title,
+          error_message: message
         });
       }
-      const id = req.params.id;
-      if (!this.findFile(id)) return this.randomFile(res);
-      if (req.url.endsWith('/'))
-        return res.status(200).redirect('/' + this.playerUrl + '/' + id);
-      const file = this.findFile(id);
-      res.status(200).render('player', {
+      if (!file) return this.randomFile(res);
+      if (req.url.endsWith('/')) return res.redirect('/' + this.playerUrl + '/' + id);
+      res.render('player', {
         title: this.cleanName(file),
         file_name: this.cleanName(file),
         file_id: this.findIndex(file),
