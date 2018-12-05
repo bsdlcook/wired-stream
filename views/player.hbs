@@ -1,12 +1,9 @@
-	{{#if file_error}}
-		<h1 style="font-size:15px">Error: no files found</h1>
-		<p>No files exist within the file table, please specify a valid directory.</p>
-	{{else}}
-		{{> player_header}}
-		{{> player_controls}}
-		<hr><br>
-		<p style="text-align:center">© 2018 wired.sh</p>
-		<hr><br>
-		{{> player_file_info}}
-		{{> player_script}}
-	{{/if}}
+{{#if error}}
+	{{> player_error}}
+{{else}}
+	{{> player_header}}
+	{{> player_controls}}
+	{{> copyright}}
+	{{> player_file_info}}
+	{{> player_script}}
+{{/if}}

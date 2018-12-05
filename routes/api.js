@@ -7,7 +7,7 @@ export default class WiredApi {
   apiRouter() {
     api.get('/:id', (req, res) => {
       const id = req.params.id;
-      if (!this.findFile(id)) return res.status(200).redirect('/');
+      if (!this.findFile(id) || !this.fileExists(id)) return res.redirect('/');
       const client = req.ip.split(':').pop();
       const fileName = this.findFile(id);
       const filePath = this.filePath + fileName;
@@ -31,7 +31,7 @@ export default class WiredApi {
       const fileName = this.findFile(id);
       const fileId = this.findIndex(fileName);
       const fileHash = this.genHash(fileName);
-      res.status(200).send({
+      res.send({
         id: fileId,
         file: this.cleanName(fileName),
         hash: fileHash
