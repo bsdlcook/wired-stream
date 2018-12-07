@@ -9,7 +9,7 @@ new WiredStream({
         types: ['.mp3']
 });
 ```
-Where **localDir** being the directory on the host machine (you'll need to provide the absolute path with a trailing slash, else it won't work). Feel free to add whatever music extensions to the **types** array, each file in the directory of **localDir** that has a matching file extension from the **types** array will be appened to the file table. 
+Where **localDir** being the directory on the host machine (you'll need to provide the absolute path with a trailing slash, else it won't work). Feel free to add whatever music extensions to the **types** array, each file in the directory of **localDir** that has a matching file extension from the **types** array will be append to the file table. 
 
 By default this application listens on port 3000 (change the default by using **port** in the constructor) so update as you will. **playerUrl** (**play**) and **apiUrl** (**media**) can stay as they're and only impacts the url's which are used: 
 - ``playerUrl``: localhost:3000/**play**/{id}
@@ -26,14 +26,22 @@ new WiredStream({
 });
 ```
 **How does it work?**
-The application will read all files within the directory specified in the config, and append those with a matching file extension in the allowed types array. Each file is given its own 8-char hash (change the default by usiong **hashLen** in the constructor) alongside an id that can be assessed from the api: **localhost:3000/media/{id||hash}** - this will return the particular file requested as a stream and is the main backend api of the whole application. An example could be as follows:
+The application will read all files within the directory specified in the config, and append those with a matching file extension in the allowed types array. Each file is given its own 10-char hash (change the default by using **hashLen** in the constructor) alongside an id that can be assessed from the api: **localhost:3000/media/{id||hash}** - this will return the particular file requested as a stream and is the main backend api of the whole application. An example could be as follows:
 - ``File``: **Some_Song.mp3** 
 - ``ID``: **20**
-- ``Hash``: **ccabf03d**
+- ``Hash``: **ccabf03d8g**
 
-You would then make a call to the api which would result in either of **localhost:3000/media/20** or **localhost:3000/media/ccabf03d** and both will give you a direct stream to the file (**Some_Song.mp3**). You can also retrieve the song information by making a request to **localhost:3000/media/{id}/info** which will give you the *file*, *id* and *hash* in JSON format.
+You would then make a call to the api which would result in either of **localhost:3000/media/20** or **localhost:3000/media/ccabf03d8g** and both will give you a direct stream to the file (**Some_Song.mp3**). You can also retrieve the song information by making a request to **localhost:3000/media/{id}/info** which will give you the *file*, *id* and *hash* in JSON format.
 
 Once the relevant files have been pushed onto the file table you can listen to them via the url: **localhost:3000/play/{id}**; you'll be greeted with a minimalistic player (yes, I have plans to add more features in the future, maybe). 
+# Shortcuts.
+There's a plethora of different key bindings available to make things easier with a keyboard. They're as the following:
+- Press **SPACE** key to **pause**/**play**.
+- Press **Left Ctrl** and **Right Ctrl** keys to **rewind**/**fastforward 5 seconds** respectively.
+- Press **Left Arrow** and **Right Arrow** keys to go **previous**/**next** song respectively.
+- Press **Up Arrow** and **Down Arrow** keys to **raise**/**lower the volume** respectively.
+
+*Vim keybindings also work (j,k-rewind/fastforward, h,l-previous/next)*.
 # Installation.
 **Node**
 If you have plans to run this application right from node, you'll have to install babel. Run this following command: ``npm install`` (to install the necessary dependencies) and ``npm install babel-cli -g`` and start by using ``babel-node app`` and it *should* be running on **localhost:3000/play**.
