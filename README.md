@@ -9,7 +9,7 @@ new WiredStream({
         types: ['.mp3']
 });
 ```
-Where **localDir** being the directory on the host machine (you'll need to provide the absolute path with a trailing slash, else it won't work). Feel free to add whatever music extensions to the **types** array, each file in the directory of **localDir** that has a matching file extension from the **types** array will be append to the file table. 
+Where **localDir** being the directory on the host machine (you'll need to provide the absolute path with a trailing slash, else it won't work). Feel free to add whatever music extensions to the **types** array, each file in the directory of **localDir** that has a matching file extension from the **types** array will be appended to the file table. 
 
 By default this application listens on port 3000 (change the default by using **port** in the constructor) so update as you will. **playerUrl** (**play**) and **apiUrl** (**media**) can stay as they're and only impacts the url's which are used: 
 - ``playerUrl``: localhost:3000/**play**/{id}
