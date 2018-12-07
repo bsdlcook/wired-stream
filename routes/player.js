@@ -4,6 +4,10 @@ import mime from 'mime-types';
 const player = express.Router();
 export default class WiredPlayer {
   playerRouter() {
+    player.get('/about', (req, res) => {
+      if (req.url.endsWith('/')) return res.redirect('/' + this.playerUrl + '/about');
+      res.render('about', {title: 'The Wired Stream.'});
+    });
     player.get('/:id', (req, res) => {
       const id = req.params.id;
       const file = this.findFile(id);
