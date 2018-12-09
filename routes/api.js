@@ -1,11 +1,39 @@
 import fs from 'fs';
 import express from 'express';
 import mime from 'mime-types';
+import {getEnv} from '../config/settings';
+import {RateLimiterMemory} from 'rate-limiter-flexible';
+
+const limit = new RateLimiterMemory({
+  points: 20,
+  duration: 3,
+  blockDuration: 600
+});
+
+const limitRate = (req, res, next) => {
+  limit
+    .consume(req.ip)
+    .then(() => {
+      if (!req.get('Referer')) limit.penalty(req.ip, 5);
+      next();
+    })
+    .catch(rej => {
+      res.status(429).send();
+    });
+};
 
 const api = express.Router();
 export default class WiredApi {
   apiRouter() {
-    api.get('/:id', (req, res) => {
+    api.use(
+      '/:id',
+      getEnv().tag === 'prod'
+        ? limitRate
+        : (req, res, next) => {
+            next();
+          }
+    );
+    api.get('/:id', (req, res, next) => {
       const id = req.params.id;
       if (!this.findFile(id) || !this.fileExists(id)) return res.redirect('/');
       const client = req.ip.split(':').pop();
@@ -17,7 +45,7 @@ export default class WiredApi {
         'Content-Length': fileStat.size
       });
       console.log(
-        "[%s]: Streaming file_id %s '%s' to client %s.",
+        "[%s] Streaming file_id %s '%s' to client %s.",
         this.appName,
         this.findIndex(fileName),
         this.cleanName(fileName),
