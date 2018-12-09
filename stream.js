@@ -9,18 +9,20 @@ import classes from 'extends-classes';
 import WiredApi from './routes/api';
 import WiredPlayer from './routes/player';
 import WiredIndex from './routes/index';
+import {version} from './package';
+import {getEnv} from './config/settings';
 
 const app = express();
 export default class WiredStream extends classes(WiredApi, WiredPlayer, WiredIndex) {
   constructor(options) {
     super();
     this.fileTable = [0];
-    this.appName = this.constructor.name;
+    this.appName = `${this.constructor.name}@${getEnv().tag}-${version}`;
     this.hashLen = options.hashLen || 10;
     this.playerUrl = options.playerUrl || 'play';
     this.apiUrl = options.apiUrl || 'media';
     this.filePath = options.localDir;
-    this.port = options.port || 3000;
+    this.port = options.port || getEnv().port;
     this.allowedTypes = options.types;
     this.initFiles();
     this.initApp();
@@ -29,16 +31,16 @@ export default class WiredStream extends classes(WiredApi, WiredPlayer, WiredInd
 
   initFiles() {
     const files = fs.readdirSync(this.filePath);
-    console.log('[%s]: Looking for files in %s.', this.appName, this.filePath);
+    console.log('[%s] Looking for files in %s.', this.appName, this.filePath);
     files.forEach(file => {
       if (this.allowedTypes.indexOf(path.extname(file)) > -1)
         this.fileTable.push([file, this.genHash(file)]);
     });
     if (this.fileCount() < 1) {
-      console.log('[%s]: No files found in %s.', this.appName, this.filePath);
+      console.log('[%s] No files found in %s.', this.appName, this.filePath);
     } else {
       console.log(
-        '[%s]: Added %s files to the file table.',
+        '[%s] Added %s files to the file table.',
         this.appName,
         this.fileCount()
       );
@@ -49,22 +51,24 @@ export default class WiredStream extends classes(WiredApi, WiredPlayer, WiredInd
     app.enable('trust proxy', true);
     app.engine('hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}));
     app.set('view engine', 'hbs');
-    app.use(
-      minifyHTML({
-        override: true,
-        exception_url: false,
-        htmlMinifier: {
-          removeComments: true,
-          collapseWhitespace: true,
-          collapseBooleanAttributes: true,
-          removeAttributeQuotes: true,
-          removeEmptyAttributes: true,
-          minifyJS: true
-        }
-      })
-    );
-    app.use('/static', express.static('public'));
+    if (getEnv().tag === 'prod') {
+      app.use(
+        minifyHTML({
+          override: true,
+          exception_url: false,
+          htmlMinifier: {
+            removeComments: true,
+            collapseWhitespace: true,
+            collapseBooleanAttributes: true,
+            removeAttributeQuotes: true,
+            removeEmptyAttributes: true,
+            minifyJS: true
+          }
+        })
+      );
+    }
     app.use('/' + this.apiUrl, this.apiRouter());
+    app.use('/static', express.static('public'));
     app.use('/' + this.playerUrl, this.playerRouter());
     app.use('/', this.indexRouter());
     app.use((req, res) => {
@@ -74,7 +78,7 @@ export default class WiredStream extends classes(WiredApi, WiredPlayer, WiredInd
 
   start() {
     app.listen(this.port, () => {
-      console.log('[%s]: Application running on port %s.', this.appName, this.port);
+      console.log('[%s] Application running on port %s.', this.appName, this.port);
     });
   }
 
