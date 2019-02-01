@@ -23,7 +23,7 @@ export default class WiredStream extends classes(WiredApi, WiredPlayer, WiredInd
     this.apiUrl = options.apiUrl || 'media';
     this.filePath = options.localDir;
     this.port = options.port || getEnv().port;
-    this.allowedTypes = options.types;
+    this.allowedTypes = options.types || ['.mp3'];
     this.initFiles();
     this.initApp();
     this.start();
@@ -32,7 +32,7 @@ export default class WiredStream extends classes(WiredApi, WiredPlayer, WiredInd
   initFiles() {
     const files = fs.readdirSync(this.filePath);
     console.log('[%s] Looking for files in %s.', this.appName, this.filePath);
-    files.forEach(file => {
+    files.forEach((file) => {
       if (this.allowedTypes.indexOf(path.extname(file)) > -1)
         this.fileTable.push([file, this.genHash(file)]);
     });
@@ -49,7 +49,18 @@ export default class WiredStream extends classes(WiredApi, WiredPlayer, WiredInd
 
   initApp() {
     app.enable('trust proxy', true);
-    app.engine('hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}));
+    app.engine(
+      'hbs',
+      exphbs({
+        defaultLayout: 'main',
+        extname: '.hbs',
+        helpers: {
+          getYear: () => {
+            return new Date().getFullYear();
+          }
+        }
+      })
+    );
     app.set('view engine', 'hbs');
     if (getEnv().tag === 'prod') {
       app.use(
@@ -67,8 +78,9 @@ export default class WiredStream extends classes(WiredApi, WiredPlayer, WiredInd
         })
       );
     }
-    app.use('/' + this.apiUrl, this.apiRouter());
+
     app.use('/static', express.static('public'));
+    app.use('/' + this.apiUrl, this.apiRouter());
     app.use('/' + this.playerUrl, this.playerRouter());
     app.use('/', this.indexRouter());
     app.use((req, res) => {

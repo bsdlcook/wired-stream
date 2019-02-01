@@ -6,7 +6,6 @@ Within the file ``app.js`` at the root of the project, you'll need to update the
 ```js
 new WiredStream({
         localDir: '/path/to/music/dir/',
-        types: ['.mp3']
 });
 ```
 Where **localDir** being the directory on the host machine (you'll need to provide the absolute path with a trailing slash, else it won't work). Feel free to add whatever music extensions to the **types** array, each file in the directory of **localDir** that has a matching file extension from the **types** array will be appended to the file table. 

@@ -5,7 +5,8 @@ export default class WiredIndex {
   indexRouter() {
     index.get('/', (req, res) => {
       res.render('home', {
-        title: 'Uh oh — wired.sh'
+        title: 'WiredStream.',
+        version: this.appName
       });
     });
     return index;

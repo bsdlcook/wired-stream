@@ -5,15 +5,17 @@ const player = express.Router();
 export default class WiredPlayer {
   playerRouter() {
     player.get('/about', (req, res) => {
-      if (req.url.endsWith('/')) return res.redirect('/' + this.playerUrl + '/about');
-      res.render('about', {title: 'The Wired Stream.', version: this.appName});
+      if (req.url.endsWith('/'))
+        return res.redirect('/' + this.playerUrl + '/about');
+      res.render('about', {title: this.appName, version: this.appName});
     });
     player.get('/:id', (req, res) => {
       const id = req.params.id;
       const file = this.findFile(id);
       if (this.fileCount() < 1 || (file && !this.fileExists(id))) {
         if (file) this.fileTable.splice([this.findIndex(file)], 1);
-        const title = this.fileCount() < 1 ? 'no files found.' : 'file no longer exists.';
+        const title =
+          this.fileCount() < 1 ? 'no files found.' : 'file no longer exists.';
         const message =
           this.fileCount() < 1
             ? 'No files exist in the file table, please specify a valid directory in the server configuration.'
@@ -25,9 +27,11 @@ export default class WiredPlayer {
         });
       }
       if (!file) return this.randomFile(res);
-      if (req.url.endsWith('/')) return res.redirect('/' + this.playerUrl + '/' + id);
+      if (req.url.endsWith('/'))
+        return res.redirect('/' + this.playerUrl + '/' + id);
       res.render('player', {
         title: this.cleanName(file),
+        version: this.appName,
         file_name: this.cleanName(file),
         file_id: this.findIndex(file),
         file_count: this.fileCount(),

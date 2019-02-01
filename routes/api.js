@@ -17,7 +17,7 @@ const limitRate = (req, res, next) => {
       if (!req.get('Referer')) limit.penalty(req.ip, 5);
       next();
     })
-    .catch(rej => {
+    .catch((rej) => {
       res.status(429).send();
     });
 };
