@@ -1,5 +1,5 @@
 import WiredStream from './stream';
 
 new WiredStream({
-  localDir: '/path/to/local/dir/'
+  localDir: '/path/to/music/dir/'
 });

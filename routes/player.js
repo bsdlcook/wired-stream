@@ -7,7 +7,7 @@ export default class WiredPlayer {
     player.get('/about', (req, res) => {
       if (req.url.endsWith('/'))
         return res.redirect('/' + this.playerUrl + '/about');
-      res.render('about', {title: this.appName, version: this.appName});
+      res.render('about', {title: 'About WiredStream.', version: this.appName});
     });
     player.get('/:id', (req, res) => {
       const id = req.params.id;
@@ -18,12 +18,13 @@ export default class WiredPlayer {
           this.fileCount() < 1 ? 'no files found.' : 'file no longer exists.';
         const message =
           this.fileCount() < 1
-            ? 'No files exist in the file table, please specify a valid directory in the server configuration.'
+            ? 'No files exist in the file table, please specify a valid directory in the server configuration file.'
             : 'This file was removed from the server.';
         return res.status(500).render('player', {
           error: true,
           error_title: title,
-          error_message: message
+          error_message: message,
+          version: this.appName
         });
       }
       if (!file) return this.randomFile(res);

@@ -1,6 +1,6 @@
 {
   "name": "wired-stream",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Music stream backend/frontend for the wired.",
   "author": "Lewis <lewis@riseup.net>",
   "main": "app.js",

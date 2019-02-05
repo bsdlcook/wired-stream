@@ -1,9 +1,9 @@
 {{#if error}}
-	{{> player_error}}
+	{{> player/error}}
 {{else}}
-	{{> player_header}}
-	{{> player_controls}}
-	{{> copyright}}
-	{{> player_file_info}}
-	{{> player_script}}
+	{{> player/current_song}}
+	{{> player/controls}}
+	{{> misc/copyright}}
+	{{> player/file_info}}
+	{{> player/script}}
 {{/if}}
